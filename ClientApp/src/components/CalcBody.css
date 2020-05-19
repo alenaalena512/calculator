@@ -1,0 +1,64 @@
+﻿
+.container {
+    display: flex;
+}
+.mainBody {
+    width: 400px;
+    height: 580px;
+    background-color: gray;
+    margin: 0 auto;
+    border: solid black;
+    border-radius: 20px;
+    box-shadow: 5px 10px 15px 2px;
+}
+
+.result{
+    color: white;
+    background-color: black;
+    margin: 50px 0;
+    height: 60px;
+    width: 395px;
+    text-align: center;
+    font-size: 3rem;
+}
+
+.buttons{
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px auto;
+    justify-content: space-around;
+}
+
+.actions {
+    width: 80px;
+    height: 320px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+.button {
+    cursor: pointer;
+    width: 70px;
+    height: 70px;
+    margin: 0px 5px;
+    border-bottom: 4px solid black;
+    border-right: 4px solid black;
+    background: darkgray;
+    line-height: 70px;
+    text-align: center;
+    font-size: 2rem;
+    vertical-align: middle;
+}
+
+.cancel {
+    width: 275px;
+    background-color: red;
+    color: white;
+}
+
+.numZone{
+    display: flex;
+}
