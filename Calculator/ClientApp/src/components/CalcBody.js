@@ -46,12 +46,12 @@ export class CalcBody extends Component {
                 <div className='result'> {this.state.calculationResult}</div>
                 <div className='buttonsZone'>
                     <div className='leftButtons'>
-                        {numbers.map(num => <Button action={this.doClick} operation='Number' number={num} />)}
+                        {numbers.map(num => <Button key={num} action={this.doClick} operation='Number' number={num} />)}
                         <Button action={this.doClick} operation='Equals' />
                         <Button action={this.doClick} operation='Cancel' />
                     </div>
                     <div className='rightButtons'>
-                        {operations.map(c => <Button action={this.doClick} operation={c} />)}
+                        {operations.map(c => <Button key={c} action={this.doClick} operation={c} />)}
                     </div>
                 </div>
             </div>
