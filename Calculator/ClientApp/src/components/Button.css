@@ -1,0 +1,23 @@
+﻿.button {
+    cursor: pointer;
+    width: 70px;
+    height: 70px;
+    margin: 0px 5px;
+    border-bottom: 4px solid black;
+    border-right: 4px solid black;
+    background: darkgray;
+    line-height: 70px;
+    text-align: center;
+    font-size: 2rem;
+    vertical-align: middle;
+}
+
+.clicked {
+    background-color: white;
+}
+
+.cancel {
+    width: 275px;
+    background-color: red;
+    color: white;
+}

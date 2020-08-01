@@ -3,7 +3,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Calculater.Controllers
+namespace Calculator.Controllers
 {
     public enum OperationKind
     {
@@ -16,11 +16,6 @@ namespace Calculater.Controllers
         Equals
     }
 
-    public static class OperationKind2
-    {
-        public const string Add = "+";
-    }
-
     public class PressBody
     {
         [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -31,43 +26,55 @@ namespace Calculater.Controllers
 
     public class Result
     {
-        public string Display { get; set; }
+        public string Display { get; set; } = "0";
+    }
+
+    public class State
+    {
+        public string Num1 { get; set; } = "";
+        public string Num2 { get; set; } = "";
+        public OperationKind? Operation { get; set; }
+        public Result Result { get; set;} = new Result();
     }
 
     [ApiController]
     [Route("/calculator")]
     public class CalculatorController : Controller
     {
-
-        class State
+        [HttpGet("")]
+        public ActionResult<Result> LoadState()
         {
-            public string Num1 { get; set; } = "";
-            public string Num2 { get; set; } = "";
-            public OperationKind? Operation { get; set; }
-            public Result result { get; set;}
+            var state = Load();
+            return state.Result;
         }
 
         [HttpPost("press")]
         public ActionResult<Result> PostPress([FromBody] PressBody data)
         {
-            //// Save
-            //var bytes = JsonSerializer.SerializeToUtf8Bytes(state);
-            //HttpContext.Session.Set("calculation", bytes);
-
-            // Load
+            // Load existing session or set a new one
             var state = Load();
-            //this.HttpContext.Session.TryGetValue("calculation", byte)
 
-
+            //Find the operation to perform
             switch (data.Operation)
             {
-                case OperationKind.Add:
                 case OperationKind.Subtract:
+                    if (state.Num1 == "")
+                    {
+                        state.Result = new Result { Display = (state.Num1 += '-') };
+                        
+                    }
+                    else if (state.Operation != null && state.Num2 == "")
+                    {
+                        state.Result = new Result { Display = (state.Num2 += '-') };                        
+                    }
+                    else
+                        PushOperation(data, state);
+                    break;
+                case OperationKind.Add:
                 case OperationKind.Multiply:
                 case OperationKind.Divide:
                     {
-                        state.Operation = data.Operation;
-                        state.result = new Result { Display = data.Operation.ToString() };
+                        PushOperation(data, state);
                         break;
                     }
                 case OperationKind.Cancel:
@@ -75,20 +82,19 @@ namespace Calculater.Controllers
                         state.Num1 = "";
                         state.Num2 = "";
                         state.Operation = null;
-                        state.result = new Result { Display = "" };
+                        state.Result = new Result { Display = "0" };
                         break;
                     }
                 case OperationKind.Number:
                     {
                         if (state.Operation == null)
                         {
-                            state.result = new Result { Display = (state.Num1 += data.Number.ToString()) };
+                            state.Result = new Result { Display = state.Num1 += data.Number.ToString() };
                         }
                         else
-                            state.result = new Result { Display = (state.Num2 += data.Number.ToString()) };
+                            state.Result = new Result { Display = state.Num2 += data.Number.ToString() };
                         break;
                     }
-
                 case OperationKind.Equals:
                     {
                         if (state.Num2 != "")
@@ -109,17 +115,24 @@ namespace Calculater.Controllers
                             state.Num2 = "";
                             state.Operation = null;
 
-                            state.result = result;
+                            state.Result = result;
                         }
                         break;
                     }
 
                 default:
-                    throw new NotImplementedException($"Opereation {data.Operation} not implemented yet.");
+                    throw new NotImplementedException($"Operation {data.Operation} not implemented yet.");
             }
 
+            //Save the state to the session
             Save(state);
-            return state.result;
+            return state.Result;
+        }
+
+        private static void PushOperation(PressBody data, State state)
+        {
+            state.Operation = data.Operation;
+            state.Result = new Result { Display = data.Operation.ToString() };
         }
 
         private void Save(State state)

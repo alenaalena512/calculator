@@ -1,0 +1,45 @@
+﻿
+.container {
+    display: flex;
+}
+.mainBody {
+    width: 400px;
+    height: 580px;
+    background-color: gray;
+    margin: 0 auto;
+    border: solid black;
+    border-radius: 20px;
+    box-shadow: 5px 10px 15px 2px;
+}
+
+.result{
+    color: white;
+    background-color: black;
+    margin: 50px 0;
+    height: 60px;
+    width: 395px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 3rem;
+}
+
+.leftButtons{
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px auto;
+    justify-content: space-around;
+}
+
+.rightButtons {
+    width: 80px;
+    height: 320px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+.buttonsZone{
+    display: flex;
+}
